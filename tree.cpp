@@ -1,18 +1,20 @@
 #include <iostream>
 #include <functional>
 #include <sstream>
+#include <fstream>
+
+template <class T>
+struct Node {
+  Node(T val) : value(val), left(0), right(0), id(0) {}
+  T value;
+  Node<T> *left;
+  Node<T> *right;
+  unsigned int id;
+};
+
 
 template <class T>
 class Tree {
-  public:
-  struct Node {
-    Node(T val) : value(val), left(0), right(0), id(0) {}
-    T value;
-    Tree<T>::Node *left;
-    Tree<T>::Node *right;
-    unsigned int id;
-  };
-
   public:
   enum TraversalOrder { PreOrder, InOrder, PostOrder};
 
@@ -22,7 +24,7 @@ class Tree {
     _insert(m_root, val);
   }
   
-  void traverse(TraversalOrder order, std::function<void(Tree<T>::Node*)> f) {
+  void traverse(TraversalOrder order, std::function<void(Node<T>*)> f) {
     _traverse(m_root, order, f);
   }
 
@@ -41,9 +43,9 @@ class Tree {
   }
 
   private:
-  void _insert(Node* &node, T val) {
+  void _insert(Node<T>* &node, T val) {
     if (node == 0) {
-      node = new Node(val);
+      node = new Node<T>(val);
       node->id = ++m_lastid;
     } else if (val < node->value) {
       _insert(node->left, val);
@@ -52,7 +54,7 @@ class Tree {
     }
   }
 
-  void _traverse(Node* node, TraversalOrder order, std::function<void(Tree<T>::Node*)> f) {
+  void _traverse(Node<T>* node, TraversalOrder order, std::function<void(Node<T>*)> f) {
     if (node) {
       if (order == PreOrder) f(node);
       _traverse(node->left, order, f);
@@ -62,12 +64,12 @@ class Tree {
     }
   }
 
-  void print_node(Tree<T>::Node* node) { 
+  void print_node(Node<T>* node) { 
     std::cout << node->value<< std::endl;
   }
 
   private:
-  Node *m_root;
+  Node<T> *m_root;
   unsigned int m_lastid;
 };
 
@@ -76,7 +78,7 @@ class GraphVizTree {
   public:
   GraphVizTree(Tree<T>* tree) : m_tree(tree) {};
 
-  void printDotNode(typename Tree<T>::Node* node) {
+  void printDotNode(Node<T>* node) {
     vertex(node);
     if (node->left) {
       edgeStr(node, node->left, 0);
@@ -86,13 +88,13 @@ class GraphVizTree {
     }
   }
 
-  void vertex(typename Tree<T>::Node* node) {
+  void vertex(Node<T>* node) {
     std::ostringstream oss;
     oss << "  node" << node->id << " [ label =\"<f0> | <f1> "<< node->value << " | <f2> \"];\n";
     m_edges += oss.str();
   }
 
-  void edgeStr(typename Tree<T>::Node* parent, typename Tree<T>::Node* child, unsigned int f) {
+  void edgeStr(Node<T>* parent, Node<T>* child, unsigned int f) {
     std::ostringstream oss;
     oss << "  \"node" << parent->id << "\":f" << f << " -> \"node" << child->id << "\":f1 ;\n";
     m_vertices += oss.str();
@@ -107,7 +109,9 @@ class GraphVizTree {
           std::placeholders::_1
         )
     );
-    std::cout
+    std::ofstream ofile;
+    ofile.open ("output.dot");
+    ofile 
       << 
       "digraph G\n" 
       "{\n"
@@ -121,6 +125,7 @@ class GraphVizTree {
       <<
       "}\n"
     ;
+    ofile.close();
   }
 
   private:
