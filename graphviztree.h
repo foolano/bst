@@ -9,7 +9,7 @@
 template <class T>
 class GraphVizTree {
   public:
-  GraphVizTree(Tree<T>* tree) : m_tree(tree) {};
+  GraphVizTree(Tree<T>* tree, std::string file = "output.dot") : m_tree(tree), m_file(file) {};
 
   void generateDot() {
     m_tree->traverse(
@@ -21,7 +21,7 @@ class GraphVizTree {
           )
         );
     std::ofstream ofile;
-    ofile.open ("output.dot");
+    ofile.open (m_file);
     ofile 
       << 
       "digraph G\n" 
@@ -64,8 +64,10 @@ class GraphVizTree {
 
   private:
   Tree<T>* m_tree;
+  std::string m_file;
   std::string m_edges;
   std::string m_vertices;
+ 
 };
 
 #endif 
