@@ -25,6 +25,20 @@ class Tree {
   void insert(T val) {
     _insert(m_root, val);
   }
+
+  Node<T>* search(T val) {
+    Node<T>*  node = m_root;
+    while (node != 0) {
+      if (node->value == val) {
+        return node;
+      } else if (node->value > val) {
+        node = node->left;
+      } else {
+        node = node->right;
+      }
+    }
+    return node;
+  }
   
   void traverse(TraversalOrder order, std::function<void(Node<T>*)> f) {
     _traverse(m_root, order, f);

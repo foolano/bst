@@ -28,6 +28,11 @@ int main() {
     std::cout << "Sorted Failed!!" << std::endl;
   }
 
+  std::cout
+    << "Value 6 " << (t.search(6) == 0 ? "not found" : "found") << std::endl;
+
+  std::cout
+    << "Value 7 " << (t.search(7) == 0 ? "not found" : "found") << std::endl;
 
   GraphVizTree<int> graphViz(&t);
   graphViz.generateDot();
