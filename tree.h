@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <iostream>
+#include <vector>
 
 template <class T>
 struct Node {
@@ -30,7 +31,7 @@ class Tree {
   }
 
   void printTraverse(TraversalOrder order) {
-    std::cout << "Traverse: " << std::endl;
+    std::cout << "printTraverse: " << std::endl;
     _traverse(
         m_root,
         order,
@@ -41,6 +42,18 @@ class Tree {
         )
     );
     std::cout << std::endl;
+  }
+
+  std::vector<T> vectorTraverse(TraversalOrder order) {
+    std::vector<T> vec;
+    std::cout << "vectorTraverse: " << std::endl;
+    _traverse(
+        m_root,
+        order,
+        [&] (Node<T>* node) { vec.push_back(node->value); }
+        );
+    std::cout << std::endl;
+    return vec;
   }
 
   private:
