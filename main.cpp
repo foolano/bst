@@ -34,6 +34,9 @@ int main() {
   std::cout
     << "Value 7 " << (t.search(7) == 0 ? "not found" : "found") << std::endl;
 
+  std::cout
+    << "NumNodes " << (t.numberOfNodes() == sorted.size() ? "OK" : "failed") << std::endl;
+
   GraphVizTree<int> graphViz(&t);
   graphViz.generateDot();
 }

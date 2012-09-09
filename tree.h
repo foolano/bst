@@ -70,6 +70,16 @@ class Tree {
     return vec;
   }
 
+  unsigned int numberOfNodes() {
+    unsigned int nodes = 0;
+    _traverse(
+        m_root,
+        TraversalOrder::PreOrder,
+        [&] (Node<T>* node) { nodes++; }
+    );
+    return nodes;
+  }
+
   private:
   void _insert(Node<T>* &node, T val) {
     if (node == 0) {
