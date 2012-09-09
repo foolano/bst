@@ -37,6 +37,9 @@ int main() {
   std::cout
     << "NumNodes " << (t.numberOfNodes() == sorted.size() ? "OK" : "failed") << std::endl;
 
+  std::cout
+    << "Height " << t.height() << std::endl;
+
   GraphVizTree<int> graphViz(&t);
   graphViz.generateDot();
 }

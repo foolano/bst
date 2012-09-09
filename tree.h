@@ -4,6 +4,7 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 template <class T>
 struct Node {
@@ -80,6 +81,10 @@ class Tree {
     return nodes;
   }
 
+  unsigned int height() {
+    return _height(m_root);
+  }
+
   private:
   void _insert(Node<T>* &node, T val) {
     if (node == 0) {
@@ -104,6 +109,14 @@ class Tree {
 
   void print_node(Node<T>* node) { 
     std::cout << node->value<< std::endl;
+  }
+
+  unsigned int _height(Node<T>* node) {
+    if (node) {
+      return (std::max(_height(node->left), _height(node->right)) + 1);
+    } else {
+      return 0;
+    }
   }
 
   private:
